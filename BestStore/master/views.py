@@ -13,5 +13,5 @@ def login(request):
     return render(request, "master/login.html")
 
 
-def logout(request):
-    return render(request, "master/logout.html")
+def render_login_form(request):
+    return render(request, 'master/login.html')
