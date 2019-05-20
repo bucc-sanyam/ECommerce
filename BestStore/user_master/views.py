@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 def testpost(request):
     if request.method == 'POST':
         body = json.loads(request.body)
+
         user_keys = ('username', 'password', 'first_name', 'last_name')
         user_dict = { key: body[key] for key in user_keys }
         try:
@@ -18,7 +19,11 @@ def testpost(request):
             new_user.save()
             json_res = {'success': True}
 
-            send_mail('Best Store Account Confirmation', 'Please click the following link to confirm your email and validate your account.', 'rbtherib2@gmail.com', ['yash.malik@tothenew.com'], fail_silently=False,)
+            send_mail('Best Store Account Confirmation',
+                      'Please click the following link to confirm your email and validate your account.',
+                      'rbtherib2@gmail.com',
+                      ['yash.malik@tothenew.com'],
+                      fail_silently=False)
 
             return JsonResponse(json_res)
         except Exception:
