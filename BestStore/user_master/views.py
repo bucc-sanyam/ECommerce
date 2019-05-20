@@ -18,7 +18,7 @@ def register_user(request):
             new_user = User(**user_dict)
             new_user.save()
             json_res = {'success': True}
-            # send_mail('Best Store Account Confirmation', 'Please click the following link to confirm your email and validate your account.', 'yamali@gmail.com', ['yash.malik@tothenew.com'], fail_silently=False,)
+            send_mail('Best Store Account Confirmation', 'Please click the following link to confirm your email and validate your account.', 'rbtherib2@gmail.com', ['yash.malik@tothenew.com'], fail_silently=False,)
             return JsonResponse(json_res)
         except Exception:
             json_res = {'success': False, 'error': 'Email already in use.'}
@@ -36,3 +36,4 @@ def user_login(request):
     else:
         json_res = {'success': False}
         return JsonResponse(json_res)
+
