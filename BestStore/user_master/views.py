@@ -27,6 +27,7 @@ def register_user(request):
 def user_login(request):
     body = json.loads(request.body)
     username, password = body['email'], body['password']
+    import pdb;pdb.set_trace()
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)

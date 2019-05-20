@@ -137,9 +137,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "rbtherib2@gmail.com"
 EMAIL_HOST_PASSWORD = "abc@123@xyz"
 
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.github.GithubOAuth2',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'social_core.backends.github.GithubOAuth2',
+# )
 
 
 LOGIN_URL = 'login'
