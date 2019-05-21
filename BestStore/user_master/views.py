@@ -3,21 +3,37 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 import json
-from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+
 
 
 # Create your views here.
 def register_user(request):
     if request.method == 'POST':
         body = json.loads(request.body)
-        user_dict = {key: body[key] for key in ('username', 'first_name', 'last_name')}
-        user_dict['password'] = make_password(body['password'])
-        user_dict['email'] = user_dict['username']
+        user_dict = { key: body[key] for key in ('username', 'first_name', 'last_name') }
+        user_dict.update({
+            'password': make_password(body['password']), 
+            'email': user_dict['username'],
+            'is_active': False
+        })
+
         try:
             new_user = User(**user_dict)
             new_user.save()
+            
+            url = f"http://127.0.0.1:8000/api/user/verify/{new_user.password.replace('/','*')}"
+            full_name = f'{new_user.first_name} {new_user.last_name}'
+            context = {'action': 'Confirm Email', 'url': url, 'full_name': full_name}
+            html_message = render_to_string('master/email.html', context)
+            plain_message = strip_tags(html_message)
+            send_mail('Best Store Account Confirmation', plain_message, 'yamalik42@gmail.com', [new_user.email], html_message=html_message, fail_silently=False,)
+            
             json_res = {'success': True}
             return JsonResponse(json_res)
         except Exception:
@@ -40,6 +56,15 @@ def user_login(request):
         return JsonResponse(json_res)
 
 
+def verify_user(request, token):
+    user = User.objects.get(password=token.replace("*", "/"))
+    if user is not None:
+        user.is_active = True
+        user.save()
+        return redirect('/')
+    else:
+        import pdb;pdb.set_trace()
+        
 def logout_view(request):
     logout(request)
     return redirect("homepage")
