@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 import json
@@ -11,7 +12,7 @@ from django.contrib.auth.hashers import make_password
 def register_user(request):
     if request.method == 'POST':
         body = json.loads(request.body)
-        user_dict = { key: body[key] for key in ('username', 'first_name', 'last_name') }
+        user_dict = {key: body[key] for key in ('username', 'first_name', 'last_name')}
         user_dict['password'] = make_password(body['password'])
         user_dict['email'] = user_dict['username']
         try:
@@ -26,10 +27,11 @@ def register_user(request):
 
 def user_login(request):
     body = json.loads(request.body)
-    username, password = body['email'], body['password']
-    import pdb;pdb.set_trace()
+    username, password= body['email'], body['password']
     user = authenticate(request, username=username, password=password)
     if user is not None:
+        name = user.first_name
+        request.session['username'] = name
         login(request, user)
         json_res = {'success': True}
         return JsonResponse(json_res)
@@ -37,3 +39,11 @@ def user_login(request):
         json_res = {'success': False}
         return JsonResponse(json_res)
 
+
+def logout_view(request):
+    logout(request)
+    return redirect("homepage")
+
+
+def user_dashboard(request):
+    return render(request, "user_master/dashboard.html")
