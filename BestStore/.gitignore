@@ -107,5 +107,3 @@ venv.bak/
 .idea/
 venv
 db.sqlite3
-Pipfile
-Pipfile.lock
