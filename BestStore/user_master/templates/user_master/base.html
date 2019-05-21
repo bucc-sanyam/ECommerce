@@ -147,9 +147,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							</script>
 						<!-- //search-scripts -->
 				</div>
-				<div class="header-right">
+
+				<div class="header-right" style="text-align:right;">
 					{% if request.session.username %}
-						 <h5> {{ request.session.username }} </h5>
+						 <h4> {{ request.session.username }} </h4>
 					{% endif %}
 					<div class="cart box_1">
 						<a href="checkout.html">

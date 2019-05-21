@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.models import User
@@ -31,7 +32,7 @@ def register_user(request):
             context = {'action': 'Confirm Email', 'url': url, 'full_name': full_name}
             html_message = render_to_string('master/email.html', context)
             plain_message = strip_tags(html_message)
-            send_mail('Best Store Account Confirmation', plain_message, 'yamalik42@gmail.com', ['yash.malik@tothenew.com'], html_message=html_message, fail_silently=False,)
+            send_mail('Best Store Account Confirmation', plain_message, 'yamalik42@gmail.com', [new_user.email], html_message=html_message, fail_silently=False,)
             
             json_res = {'success': True}
             return JsonResponse(json_res)
@@ -42,9 +43,11 @@ def register_user(request):
 
 def user_login(request):
     body = json.loads(request.body)
-    username, password = body['email'], body['password']
+    username, password= body['email'], body['password']
     user = authenticate(request, username=username, password=password)
     if user is not None:
+        name = user.first_name
+        request.session['username'] = name
         login(request, user)
         json_res = {'success': True}
         return JsonResponse(json_res)
@@ -61,3 +64,10 @@ def verify_user(request, token):
         return redirect('/')
     else:
         import pdb;pdb.set_trace()
+def logout_view(request):
+    logout(request)
+    return redirect("homepage")
+
+
+def user_dashboard(request):
+    return render(request, "user_master/dashboard.html")
