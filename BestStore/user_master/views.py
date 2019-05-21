@@ -31,7 +31,7 @@ def register_user(request):
             context = {'action': 'Confirm Email', 'url': url, 'full_name': full_name}
             html_message = render_to_string('master/email.html', context)
             plain_message = strip_tags(html_message)
-            send_mail('Best Store Account Confirmation', plain_message, 'yamalik42@gmail.com', ['yash.malik@tothenew.com'], html_message=html_message, fail_silently=False,)
+            send_mail('Best Store Account Confirmation', plain_message, 'yamalik42@gmail.com', [new_user.email], html_message=html_message, fail_silently=False,)
             
             json_res = {'success': True}
             return JsonResponse(json_res)
