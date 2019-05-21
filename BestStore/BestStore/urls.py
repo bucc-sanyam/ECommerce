@@ -19,6 +19,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #path('', include('social_django.urls', namespace='social')),
     path('', include('master.urls')),
     path('api/user/', include('user_master.urls')),
     path('password-reset/', auth_views.PasswordResetView.as_view(template_name='master/password_reset.html'), name='password_reset'),
