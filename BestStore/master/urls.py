@@ -10,7 +10,6 @@ urlpatterns = [
     path('register/', register, name="register"),
     path('login/', render_login_form, name="loginform"),
     path('products/', product_listings, name="products"),
-    path('products/<int:page>/', product_listings, name='productspage'),
     path('', include('social_django.urls', namespace='social')),
 ]
 
