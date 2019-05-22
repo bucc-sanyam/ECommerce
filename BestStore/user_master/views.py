@@ -64,6 +64,7 @@ def verify_user(request, token):
         return redirect('/')
     else:
         import pdb;pdb.set_trace()
+
         
 def logout_view(request):
     logout(request)

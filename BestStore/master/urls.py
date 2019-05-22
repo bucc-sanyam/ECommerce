@@ -13,7 +13,6 @@ urlpatterns = [
     path('login/', render_login_form, name="loginform"),
     path('product/<int:pk>/', ProductDetailView.as_view(), name="product_detail"),
     path('products/', product_listings, name="products"),
-    path('products/<int:page>/', product_listings, name='productspage'),
     path('', include('social_django.urls', namespace='social')),
 ]
 

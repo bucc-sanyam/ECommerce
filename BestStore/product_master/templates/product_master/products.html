@@ -94,7 +94,23 @@
 					{% endfor %}
 					<div class="clearfix"> </div>
 				</div>
-
+				<nav class="numbering animated wow slideInRight" data-wow-delay=".5s">
+					<ul class="pagination paging">
+						<li>
+						<a href="{{prev}}" aria-label="Previous">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+						</li>
+						{% for page_num in pages %}
+						<li><a href="/products/?page={{page_num}}">{{page_num}}</a></li>
+						{% endfor %}
+						<li>
+						<a href="{{next}}" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span>
+						</a>
+						</li>
+					</ul>
+				</nav>
 			</div>
 			<div class="clearfix"> </div>
 		</div>

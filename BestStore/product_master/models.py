@@ -41,15 +41,7 @@ class SubCategory(models.Model):
     def __str__(self):
         return self.title
 
-
-class SubCategory(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    title = models.CharField(max_length=20, choices=SUB_CATEGORY_CHOICES)
-
-    def __str__(self):
-        return self.title
-
-
+      
 class Product(models.Model):
     merchant = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
@@ -57,7 +49,7 @@ class Product(models.Model):
     price = models.IntegerField()
     quantity = models.IntegerField()
     added_date = models.DateTimeField(auto_now_add=True, null=True)
-    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, default="Mobile")
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, default='Mobile')
 
     def __str__(self):
         return self.name
