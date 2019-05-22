@@ -16,6 +16,16 @@ SUB_CATEGORY_CHOICES = (
     ('Book', 'Book'),
 )
 
+COLOR_CHOICES = (
+    ('Black', 'Black'),
+    ('Blue', 'Blue'),
+    ('Red', 'Red'),
+    ('Green', 'Green'),
+    ('White', 'White'),
+    ('Rose Gold', 'Rose Gold'),
+    ('Grey', 'Grey'),
+)
+
 
 class Category(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
@@ -31,7 +41,7 @@ class SubCategory(models.Model):
     def __str__(self):
         return self.title
 
-
+      
 class Product(models.Model):
     merchant = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
@@ -49,11 +59,8 @@ class Tags(models.Model):
     sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     product = models.OneToOneField(Product, on_delete=models.CASCADE, default=1)
     size = models.CharField(max_length=20)
-    color = models.CharField(max_length=20)
+    color = models.CharField(max_length=20, choices=COLOR_CHOICES)
     weight = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.sub_category
 
 
 class ProductImages(models.Model):
