@@ -23,19 +23,6 @@ class Category(models.Model):
     def __str__(self):
         return self.category
 
-
-class Product(models.Model):
-    merchant = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
-    description = models.CharField(max_length=100)
-    price = models.IntegerField()
-    quantity = models.IntegerField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
-
-
 class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=20, choices=SUB_CATEGORY_CHOICES)
@@ -43,6 +30,16 @@ class SubCategory(models.Model):
     def __str__(self):
         return self.title
 
+class Product(models.Model):
+    merchant = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+    price = models.IntegerField()
+    quantity = models.IntegerField()
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 class Tags(models.Model):
     sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
