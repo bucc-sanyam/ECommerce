@@ -16,24 +16,22 @@ SUB_CATEGORY_CHOICES = (
     ('Book', 'Book'),
 )
 
+COLOR_CHOICES = (
+    ('Black', 'Black'),
+    ('Blue', 'Blue'),
+    ('Red', 'Red'),
+    ('Green', 'Green'),
+    ('White', 'White'),
+    ('Rose Gold', 'Rose Gold'),
+    ('Grey', 'Grey'),
+)
+
 
 class Category(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
 
     def __str__(self):
         return self.category
-
-
-class Product(models.Model):
-    merchant = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
-    description = models.CharField(max_length=100)
-    price = models.IntegerField()
-    quantity = models.IntegerField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
 
 
 class SubCategory(models.Model):
@@ -44,14 +42,25 @@ class SubCategory(models.Model):
         return self.title
 
 
-class Tags(models.Model):
-    sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
-    size = models.CharField(max_length=20)
-    color = models.CharField(max_length=20)
-    weight = models.CharField(max_length=20)
+class Product(models.Model):
+    merchant = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+    price = models.IntegerField()
+    quantity = models.IntegerField()
+    added_date = models.DateTimeField(auto_now_add=True)
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.sub_category
+        return self.name
+
+
+class Tags(models.Model):
+    sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    size = models.CharField(max_length=20)
+    color = models.CharField(max_length=20, choices=COLOR_CHOICES)
+    weight = models.CharField(max_length=20)
 
 
 class ProductImages(models.Model):
