@@ -2,7 +2,6 @@ from django.shortcuts import render
 from product_master.models import Category, SubCategory, Product
 
 
-
 def home(request):
     return render(request, "master/homepage.html")
 
@@ -17,6 +16,10 @@ def login(request):
 
 def render_login_form(request):
     return render(request, 'master/login.html')
+
+
+def cart(request):
+    return render(request, 'master/checkout.html')
 
 
 def product_listings(request):
