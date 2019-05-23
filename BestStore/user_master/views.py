@@ -55,13 +55,14 @@ def user_login(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         name = user.first_name
-        request.session['username'] = name
         login(request, user)
+        request.session['username'] = name
         json_res = {'success': True}
         return JsonResponse(json_res)
-    else:
-        json_res = {'success': False}
-        return JsonResponse(json_res)
+    elif len(User.objects.filter(username=username)):
+        return JsonResponse({'success': False, 'exists': True})
+
+    return JsonResponse({'success': False, 'exists': False})
 
 
 def verify_user_email(request, token):

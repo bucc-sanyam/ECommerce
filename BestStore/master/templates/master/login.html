@@ -81,7 +81,11 @@
 					if (res['success']) {
 						window.location.href = '/'
 					} else {
-						alert('login failed')
+						if (res['exists']) {
+							alert('PLEASE CONFIRM YOUR EMAIL')
+						} else {
+							alert('BAD CREDENTIALS')
+						}
 					}
 				}
 			};

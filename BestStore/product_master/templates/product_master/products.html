@@ -116,39 +116,7 @@
 		</div>
 	</div>
 
-<script type='text/javascript'>
-$( document ).ready(function() {
-    
 
-	var cart_updated = false
-	$('.add-item').click(function(evt) {
-		if (!cart_updated) {
-			evt.preventDefault()
-			pk = evt.target.getAttribute('data-pk')
-			price = evt.target.getAttribute('data-price')
-			cart_updated = true
-
-			var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-			xmlhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					res = JSON.parse(this.responseText)
-					if (res['success'] === true) {
-						update_cart_header(parseInt(price), 1)
-					}
-				}
-			};
-
-			xmlhttp.open("GET", "/api/product/cart/add/"+pk+"/");
-			xmlhttp.send();
-		}
-	})
-
-	var update_cart_header = function(price, qty) {
-		console.log($('#cart-qty').html())
-	}
-
-});
-</script>
 <!-- //breadcrumbs -->
 {% include "master/footer.html" %}
 {% endblock %}

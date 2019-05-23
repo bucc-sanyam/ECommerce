@@ -5,7 +5,7 @@ from product_master.models import Product
 from django.views.generic.detail import DetailView
 
 
-def manage_cart(request, pk):
+def cart_add(request, pk):
     if request.method == 'GET':
         sess = request.session
         qty = request.GET.get('qty', 1)
@@ -22,6 +22,16 @@ def manage_cart(request, pk):
             sess['cart'].append({'pk': pk, 'qty': qty})
 
         return JsonResponse({'success': True})
+
+
+def cart_empty(request, pk=0):
+    if request.method == 'GET':
+        if pk == 0:
+            sess = request.session
+            sess['cart_qty'] = 0
+            sess['cart'] = list()
+
+            return JsonResponse({'success': True})
 
 
 class ProductDetailView(DetailView):
