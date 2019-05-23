@@ -18,6 +18,10 @@ def render_login_form(request):
     return render(request, 'master/login.html')
 
 
+def cart(request):
+    return render(request, 'master/checkout.html')
+
+
 def product_listings(request):
     if request.method == 'GET':
         try:

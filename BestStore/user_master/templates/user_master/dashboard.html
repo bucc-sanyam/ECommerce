@@ -1,4 +1,4 @@
-{% extends "user_master/base.html" %}
+{% extends "master/base.html" %}
 {% load static %}
 {% block content %}
 <!-- breadcrumbs -->
@@ -33,10 +33,10 @@
 								<td><a class="anchorjs-link" href="/"><h1 id="h3.-bootstrap-heading">Reset Password</h1></a></td>
 							</tr>
 							<tr>
-								<td><a class="anchorjs-link" href="/"><h1 id="h4.-bootstrap-heading">Update Profile</h1></a></td>
+								<td><a class="anchorjs-link" href="{% url 'update_profile' user.id %}"><h1 id="h4.-bootstrap-heading">Update Profile</h1></a></td>
 							</tr>
 							<tr>
-								<td><a class="anchorjs-link" href="/"><h1 id="h5.-bootstrap-heading">Delete Profile</h1></a></td>
+								<td><a class="anchorjs-link" href="{% url 'delete_profile' user.id %}"><h1 id="h5.-bootstrap-heading">Delete Profile</h1></a></td>
 							</tr>
 
 						</tbody>
