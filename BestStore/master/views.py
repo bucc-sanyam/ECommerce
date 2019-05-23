@@ -19,6 +19,10 @@ def render_login_form(request):
     return render(request, 'master/login.html')
 
 
+def cart(request):
+    return render(request, 'master/checkout.html')
+
+
 def product_listings(request):
     if request.method == 'GET':
         try:
@@ -47,6 +51,5 @@ def product_listings(request):
             'prev': f'/products/?page={page-1}' if page != 1 else '#',
             'next': f'/products/?page={page+1}' if page != total_pages else '#',
         }
-        import pdb;pdb.set_trace()
 
         return render(request, 'product_master/products.html', context=info)
