@@ -3,7 +3,7 @@ from .models import Product
 
 def add_session_cart(request):
     total_qty = 0
-    total_price = 0 
+    total_price = 0
 
     for details in request.session.get('cart', list()):
         total_qty += details['qty']
