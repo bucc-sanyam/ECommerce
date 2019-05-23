@@ -2,7 +2,6 @@ from django.shortcuts import render
 from product_master.models import Category, SubCategory, Product
 
 
-
 def home(request):
     return render(request, "master/homepage.html")
 
@@ -47,6 +46,5 @@ def product_listings(request):
             'prev': f'/products/?page={page-1}' if page != 1 else '#',
             'next': f'/products/?page={page+1}' if page != total_pages else '#',
         }
-        import pdb;pdb.set_trace()
 
         return render(request, 'product_master/products.html', context=info)

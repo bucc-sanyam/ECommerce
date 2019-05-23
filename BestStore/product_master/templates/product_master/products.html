@@ -82,12 +82,12 @@
 							<div class="new-collections-grid1-image">
 								<a href="single.html" class="product-image"><img src="{{prod.productimages_set.first.image.url}}" alt=" " height='42' width='42'></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
-									<a href="single.html">Quick View</a>
+									<a href="/products/{{prod.id}}/">Quick View</a>
 								</div>
 							</div>	
 							<h4><a href="single.html">{{prod.name}}</a></h4>
 							<div class="simpleCart_shelfItem products-right-grid1-add-cart">
-								<p style='text-align: center;'>${{prod.price}}<a class="item_add" href="#">add to cart </a></p>
+								<p style='text-align: center;'>${{prod.price}}<a data-pk="{{prod.id}}" data-price="{{prod.price}}" class="add-item" href="#">add to cart </a></p>
 							</div>
 						</div>
 					</div>
@@ -117,7 +117,37 @@
 	</div>
 
 <script type='text/javascript'>
+$( document ).ready(function() {
+    
 
+	var cart_updated = false
+	$('.add-item').click(function(evt) {
+		if (!cart_updated) {
+			evt.preventDefault()
+			pk = evt.target.getAttribute('data-pk')
+			price = evt.target.getAttribute('data-price')
+			cart_updated = true
+
+			var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					res = JSON.parse(this.responseText)
+					if (res['success'] === true) {
+						update_cart_header(parseInt(price), 1)
+					}
+				}
+			};
+
+			xmlhttp.open("GET", "/api/product/cart/add/"+pk+"/");
+			xmlhttp.send();
+		}
+	})
+
+	var update_cart_header = function(price, qty) {
+		console.log($('#cart-qty').html())
+	}
+
+});
 </script>
 <!-- //breadcrumbs -->
 {% endblock %}
