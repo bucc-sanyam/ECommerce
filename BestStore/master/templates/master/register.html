@@ -50,7 +50,7 @@
 					<div id='response-error' style='text-align: center; color: red; margin-top: 14px;'></div>
 					<input type="submit" value="Register" id='signup-button'>
 				</form>
-				
+				<div class="loader" style='margin: auto; display: none; margin-top: 8px;'></div>
 			</div>
 			<div class="register-home animated wow slideInUp" data-wow-delay=".5s">
 				<a href="index.html">Home</a>
@@ -63,6 +63,7 @@
 <script type='text/javascript'>
 	var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 	var form_is_good_to_post = true
+	var server_is_processing = false
 
 	regx_patts = {
 		first_name: [/^[A-Za-z]+$/, '*Only alphabetical characters allowed'],
@@ -107,6 +108,9 @@
 
 	var form = document.querySelector('.signup').onsubmit = function (evt) {
 		evt.preventDefault()
+		
+		$('#response-error').html('')
+		$('.loader').css('display', 'block')
 
 		for (let i = 0; i < inputs.length; i++) {
 			if (regx_patts.hasOwnProperty(inputs[i].name)) {
@@ -114,11 +118,14 @@
 			}
 		}
 		
-		if (ConfirmPassword() && form_is_good_to_post) {
+		if (ConfirmPassword() && form_is_good_to_post && !server_is_processing) {
+			server_is_processing = true
 			form_data = $('.signup').children('.post')
 			var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
 			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
+					server_is_processing = false
+					$('.loader').css('display', 'none')
 					res = JSON.parse(this.responseText)
 					if (res['success']) {
 						$('#response-error').css('display', 'none')
@@ -139,7 +146,8 @@
 			xmlhttp.setRequestHeader("Content-Type", "application/json");
 			xmlhttp.setRequestHeader("X-CSRFToken", csrftoken);
 			xmlhttp.send(JSON.stringify(obj_to_post));
-		} else {
+			
+		} else if (!server_is_processing) {
 			$('#response-error').html("1 or more fields contain invalid inputs...")
 		}
 	};	
