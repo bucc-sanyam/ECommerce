@@ -63,7 +63,7 @@ def verify_user(request, token):
         user.save()
         return redirect('/')
     else:
-        import pdb;pdb.set_trace()
+        pass
 
         
 def logout_view(request):
