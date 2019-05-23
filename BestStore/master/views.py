@@ -2,7 +2,6 @@ from django.shortcuts import render
 from product_master.models import Category, SubCategory, Product
 
 
-
 def home(request):
     return render(request, "master/homepage.html")
 

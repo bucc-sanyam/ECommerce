@@ -147,14 +147,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							</script>
 						<!-- //search-scripts -->
 				</div>
-				<div class="header-right">
+				<div class="header-right" style='width: 242px !important;'>
 					{% if request.session.username %}
 						<a href="{% url 'dashboard' %}"> <h5> {{ request.session.username }} </h5> </a>
 					{% endif %}
 					<div class="cart box_1">
 						<a href="checkout.html">
-							<h3> <div class="total">
-								<span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span> items)</div>
+							<h3> <div class="total"><span class="simpleCart_tota">${{total_price}}.00</span>  (<span id='cart-qty'>{{total_qty}}</span> items)</div>
 								<img src="{% static 'images/bag.png' %}" alt="" />
 							</h3>
 						</a>
