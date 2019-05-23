@@ -1,7 +1,5 @@
-from datetime import timezone
-from django.shortcuts import render
-from django.views.generic.detail import DetailView
 from product_master.models import Product
+from django.views.generic.detail import DetailView
 
 
 class ProductDetailView(DetailView):
@@ -14,3 +12,8 @@ class ProductDetailView(DetailView):
         product = kwargs['object']
         context['image'] = product.productimages_set.all()
         return context
+
+
+def add_to_cart(request):
+    if request.method == 'POST':
+        pass
