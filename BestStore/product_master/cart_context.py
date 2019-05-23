@@ -2,6 +2,7 @@ from .models import Product
 
 
 def add_session_cart(request):
+    """Adds the value of the products and shows the total"""
     total_qty = 0
     total_price = 0
 
