@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from product_master.models import Category, SubCategory, Product
 
 
@@ -7,7 +7,9 @@ def home(request):
 
 
 def register(request):
-    return render(request, "master/register.html")
+    if request.user.is_anonymous:
+        return render(request, "master/register.html")
+    return redirect('/dashboard/')
 
 
 def login(request):
@@ -18,8 +20,14 @@ def render_login_form(request):
     return render(request, 'master/login.html')
 
 
-def cart(request):
-    return render(request, 'master/checkout.html')
+def checkout(request):
+    cart = request.session['cart']
+    context = {'products': list()}
+    for detail in cart:
+        product = Product.objects.get(pk=detail['pk'])
+        context_detail = {'qty': detail['qty'], 'product': product}
+        context['products'].append(context_detail)
+    return render(request, 'master/checkout.html', context=context)
 
 
 def product_listings(request):
