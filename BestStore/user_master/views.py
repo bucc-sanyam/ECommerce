@@ -71,7 +71,7 @@ def verify_user_email(request, token):
     if user is not None:
         user.is_active = True
         user.save()
-        return redirect('/')
+        return redirect('/login/')
     else:
         raise Http404
 
