@@ -76,10 +76,12 @@ class ProductImages(models.Model):
     image = models.ImageField()
 
 
-class Orders(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
-    order_date = models.DateTimeField(auto_now_add=True)
-    payment_type = models.CharField(max_length=20, choices=PAYMENT_CHOICES)
-    quantity = models.IntegerField()
+# class Orders(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+#     order_date = models.DateTimeField(auto_now_add=True)
+#     payment_type = models.CharField(max_length=20, choices=PAYMENT_CHOICES)
+#     quantity = models.IntegerField()
+#
+
 
