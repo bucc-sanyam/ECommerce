@@ -1,5 +1,5 @@
 import json
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.urls import reverse_lazy
@@ -55,13 +55,14 @@ def user_login(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         name = user.first_name
-        request.session['username'] = name
         login(request, user)
+        request.session['username'] = name
         json_res = {'success': True}
         return JsonResponse(json_res)
-    else:
-        json_res = {'success': False}
-        return JsonResponse(json_res)
+    elif len(User.objects.filter(username=username)):
+        return JsonResponse({'success': False, 'exists': True})
+
+    return JsonResponse({'success': False, 'exists': False})
 
 
 def verify_user_email(request, token):
@@ -70,7 +71,7 @@ def verify_user_email(request, token):
     if user is not None:
         user.is_active = True
         user.save()
-        return redirect('/')
+        return redirect('/login/')
     else:
         raise Http404
 
@@ -104,5 +105,14 @@ class UpdateUserProfile(LoginRequiredMixin, UpdateView):
 class DeleteUserProfile(LoginRequiredMixin, DeleteView):
     """Deletes the user profile """
     model = User
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('loginform')
     template_name = 'user_master/user_confirm_delete.html'
+
+    def delete(self, request, *args, **kwargs):
+        """Deletes the session"""
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.delete()
+        del request.session['username']
+        request.session.modified = True
+        return HttpResponseRedirect(success_url)

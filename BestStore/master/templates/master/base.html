@@ -35,6 +35,28 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </script>
 <!-- //animation-effect -->
 </head>
+<style>
+.loader {
+  border: 16px solid #FFC229;
+  border-radius: 50%;
+  border-top: 16px solid white;
+  width: 42px;
+  height: 42px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
 
 <body>
 <!-- header -->
@@ -152,11 +174,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 					<div class="cart box_1">
 						<a href="checkout.html">
-							<h3> <div class="total"><span class="simpleCart_tota">${{total_price}}.00</span>  (<span id='cart-qty'>{{total_qty}}</span> items)</div>
+							<h3> <div class="total">$<span id='cart-price'>{{total_price}}</span>.00 (<span id='cart-qty'>{{total_qty}}</span> items)</div>
 								<img src="{% static 'images/bag.png' %}" alt="" />
 							</h3>
 						</a>
-						<p><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>
+						<p><a href="#" class="simpleCart_empty" id='empty-cart'>Empty Cart</a></p>
 						<div class="clearfix"> </div>
 					</div>
 				</div>
@@ -165,7 +187,71 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		</div>
 	</div>
 <!-- //header -->
+<script type='text/javascript'>
+current_cart_qty = '{{total_qty}}'
+current_cart_price = '{{total_price}}'
 
+$( document ).ready(function() {
+
+	$('#empty-cart').click(function(evt) {
+		evt.preventDefault()
+
+		var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				res = JSON.parse(this.responseText)
+				if (res['success'] === true) {
+					empty_cart_header(0, 0)
+					current_cart_qty = 0
+					current_cart_price = 0
+					$(window).scrollTop(0);
+
+				}
+			}
+		};
+
+		xmlhttp.open("GET", "/api/product/cart/empty/");
+		xmlhttp.send();	
+	})
+
+	$('.add-item').click(function(evt) {
+		evt.preventDefault()
+		pk = evt.target.getAttribute('data-pk')
+		price = evt.target.getAttribute('data-price')
+
+		var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				res = JSON.parse(this.responseText)
+				if (res['success'] === true) {
+					update_cart_header(parseInt(price), 1)
+					$(window).scrollTop(0);
+
+				}
+			}
+		};
+
+		xmlhttp.open("GET", "/api/product/cart/add/"+pk+"/");
+		xmlhttp.send();	
+	})
+
+	var update_cart_header = function(price, qty) {
+		current_cart_qty = parseInt(current_cart_qty) + qty
+		$('#cart-qty').html(current_cart_qty)
+
+		current_cart_price = parseInt(current_cart_price) + (qty*price)
+		$('#cart-price').html(current_cart_price)
+	}
+
+	var empty_cart_header = function(price, qty) {
+		if (price === 0 && qty === 0) {
+			$('#cart-qty').html('0')
+			$('#cart-price').html('0')
+		}
+	}
+
+});
+</script>
 {% block content %}
 {% endblock %}
 

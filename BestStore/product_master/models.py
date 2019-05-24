@@ -26,6 +26,14 @@ COLOR_CHOICES = (
     ('Grey', 'Grey'),
 )
 
+PAYMENT_CHOICES = (
+    ('COD', 'COD'),
+    ('Credit Card', 'Credit Card'),
+    ('Debit Card', 'Debit Card'),
+    ('WALLET', 'WALLET'),
+    ('BTC', 'BTC'),
+)
+
 
 class Category(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
@@ -66,3 +74,14 @@ class Tags(models.Model):
 class ProductImages(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     image = models.ImageField()
+
+
+# class Orders(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+#     order_date = models.DateTimeField(auto_now_add=True)
+#     payment_type = models.CharField(max_length=20, choices=PAYMENT_CHOICES)
+#     quantity = models.IntegerField()
+#
+
+
